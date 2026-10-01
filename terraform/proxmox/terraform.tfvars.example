@@ -1,0 +1,5 @@
+# Copie ce fichier en terraform.tfvars (gitignore) et remplis tes vraies valeurs.
+
+proxmox_endpoint  = "https://192.168.x.x:8006"
+proxmox_api_token = "terraform-prov@pve!terraform=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+proxmox_node      = "pve"
