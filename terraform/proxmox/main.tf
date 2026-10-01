@@ -30,6 +30,8 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
     }
   }
 
+  stop_on_destroy = true
+
   agent {
     enabled = true
   }
@@ -67,6 +69,8 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
     }
   }
 
+  stop_on_destroy = true
+
   agent {
     enabled = true
   }
@@ -103,6 +107,8 @@ resource "proxmox_virtual_environment_vm" "infra" {
       }
     }
   }
+
+  stop_on_destroy = true
 
   agent {
     enabled = true
