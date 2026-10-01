@@ -13,10 +13,9 @@ spec:
     metadata:
       labels:
         app: hello-world
-    spec: # nosemgrep: yaml.kubernetes.security.run-as-non-root.run-as-non-root
+    spec: # nosemgrep: yaml.kubernetes.security.run-as-non-root.run-as-non-root trivy:ignore:KSV-0118
       # nginx doit demarrer en root pour bind le port 80 (<1024) avec cette
       # image demo ; a remplacer par une vraie app (non-root) plus tard.
-      # trivy:ignore:KSV-0118
       containers:
         - name: hello-world
           image: nginxdemos/hello:plain-text
