@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+
+# Secrets
+*.pem
+*.key
+.env
+secrets/
+wg-*.conf
+
+# Ansible
+*.retry
+vault-pass.txt
