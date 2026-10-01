@@ -19,7 +19,7 @@ jobs:
         run: gitleaks detect --source . --verbose --redact
 
       - name: Semgrep (static analysis)
-        run: semgrep scan --config auto --metrics=off --error
+        run: semgrep scan --config auto --error
 
       - name: Trivy (secrets + IaC misconfigurations)
         run: |
