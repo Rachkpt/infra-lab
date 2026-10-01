@@ -16,6 +16,7 @@ spec:
     spec: # nosemgrep: yaml.kubernetes.security.run-as-non-root.run-as-non-root
       # nginx doit demarrer en root pour bind le port 80 (<1024) avec cette
       # image demo ; a remplacer par une vraie app (non-root) plus tard.
+      # trivy:ignore:KSV-0118
       containers:
         - name: hello-world
           image: nginxdemos/hello:plain-text
@@ -23,3 +24,18 @@ spec:
             - containerPort: 80
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: var-cache-nginx
+              mountPath: /var/cache/nginx
+            - name: var-run
+              mountPath: /var/run
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: var-cache-nginx
+          emptyDir: {}
+        - name: var-run
+          emptyDir: {}

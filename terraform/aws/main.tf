@@ -24,6 +24,14 @@ resource "aws_instance" "wg_gateway" {
   # lui est pas destine (tunnel WireGuard vers le reseau Proxmox local).
   source_dest_check = false
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
+
   tags = { Name = "wg-gateway" }
 }
 
@@ -56,8 +64,13 @@ resource "aws_instance" "monitoring" {
   vpc_security_group_ids = [aws_security_group.internal_only.id]
   key_name               = aws_key_pair.infra_lab.key_name
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
   root_block_device {
     volume_size = 30
+    encrypted   = true
   }
 
   tags = { Name = "monitoring" }
@@ -69,6 +82,14 @@ resource "aws_instance" "runner_ci" {
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.internal_only.id]
   key_name               = aws_key_pair.infra_lab.key_name
+
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   tags = { Name = "runner-ci" }
 }

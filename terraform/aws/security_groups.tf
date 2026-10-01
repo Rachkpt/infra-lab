@@ -36,6 +36,10 @@ resource "aws_security_group" "wg_gateway" {
     cidr_blocks = ["10.0.1.0/24"]
   }
 
+  # Egress large accepte pour ce lab (apt, docker, WireGuard, DNS...) :
+  # restreindre precisement casserait regulierement pour peu de benefice
+  # reel ici (pas de donnees sensibles a proteger en sortie).
+  # trivy:ignore:AWS-0104
   egress {
     from_port   = 0
     to_port     = 0
@@ -69,6 +73,7 @@ resource "aws_security_group" "internal_only" {
     cidr_blocks = ["10.8.0.0/24", "10.10.10.0/24"]
   }
 
+  # trivy:ignore:AWS-0104
   egress {
     from_port   = 0
     to_port     = 0
