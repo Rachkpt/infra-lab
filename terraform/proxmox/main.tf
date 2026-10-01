@@ -29,8 +29,13 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
   initialization {
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "10.10.10.10/24"
+        gateway = "10.10.10.1"
       }
+    }
+
+    dns {
+      servers = ["10.10.10.1"]
     }
 
     user_account {
@@ -42,7 +47,7 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
   stop_on_destroy = true
 
   agent {
-    enabled = true
+    enabled = false
   }
 }
 
@@ -77,8 +82,13 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
   initialization {
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "10.10.10.11/24"
+        gateway = "10.10.10.1"
       }
+    }
+
+    dns {
+      servers = ["10.10.10.1"]
     }
 
     user_account {
@@ -90,7 +100,7 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
   stop_on_destroy = true
 
   agent {
-    enabled = true
+    enabled = false
   }
 }
 
@@ -125,8 +135,13 @@ resource "proxmox_virtual_environment_vm" "infra" {
   initialization {
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "10.10.10.12/24"
+        gateway = "10.10.10.1"
       }
+    }
+
+    dns {
+      servers = ["10.10.10.1"]
     }
 
     user_account {
@@ -138,6 +153,6 @@ resource "proxmox_virtual_environment_vm" "infra" {
   stop_on_destroy = true
 
   agent {
-    enabled = true
+    enabled = false
   }
 }

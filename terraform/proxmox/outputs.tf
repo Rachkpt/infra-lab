@@ -1,11 +1,11 @@
 output "k3s_master_ip" {
-  value = proxmox_virtual_environment_vm.k3s_master.ipv4_addresses
+  value = "10.10.10.10"
 }
 
 output "k3s_worker_ip" {
-  value = proxmox_virtual_environment_vm.k3s_worker.ipv4_addresses
+  value = "10.10.10.11"
 }
 
 output "infra_ip" {
-  value = proxmox_virtual_environment_vm.infra.ipv4_addresses
+  value = "10.10.10.12"
 }

@@ -57,10 +57,15 @@ Creer `/etc/dnsmasq.d/vmbr1.conf` :
 ```
 interface=vmbr1
 bind-interfaces
-dhcp-range=10.10.10.10,10.10.10.100,12h
+dhcp-range=10.10.10.50,10.10.10.100,12h
 dhcp-option=3,10.10.10.1
 dhcp-option=6,1.1.1.1,8.8.8.8
 ```
+
+Plage DHCP volontairement a partir de `.50` : les 3 VMs d'infra
+(`k3s-master`, `k3s-worker`, `infra`) ont des IP fixes (`.10`, `.11`, `.12`)
+configurees directement par Terraform, pour un control-plane stable. Le
+DHCP ne sert qu'aux futures VMs ajoutees manuellement sur ce reseau.
 
 ```bash
 systemctl restart dnsmasq
