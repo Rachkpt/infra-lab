@@ -28,6 +28,6 @@ infra-lab/
   - [x] Tunnel WireGuard entre Proxmox et AWS — voir [docs/phase1-wireguard-tunnel.md](docs/phase1-wireguard-tunnel.md)
   - [x] Traefik (HTTPS public, wg-gateway) + DNS interne (dnsmasq, Proxmox) — voir [docs/phase1-traefik-dns.md](docs/phase1-traefik-dns.md)
   - [ ] Ansible (pour l'instant tout est fait a la main, a automatiser)
-- [ ] Phase 2 : k3s + ArgoCD (GitOps)
+- [x] Phase 2 : k3s + ArgoCD (GitOps) — voir [docs/phase2-k3s-argocd.md](docs/phase2-k3s-argocd.md)
 - [ ] Phase 3 : pipeline DevSecOps (+ VM runner-ci)
 - [ ] Phase 4 : monitoring sur AWS, alertes Telegram
