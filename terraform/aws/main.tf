@@ -20,7 +20,26 @@ resource "aws_instance" "wg_gateway" {
   vpc_security_group_ids = [aws_security_group.wg_gateway.id]
   key_name               = aws_key_pair.infra_lab.key_name
 
+  # Necessaire pour que cette VM puisse router/forwarder du trafic qui ne
+  # lui est pas destine (tunnel WireGuard vers le reseau Proxmox local).
+  source_dest_check = false
+
   tags = { Name = "wg-gateway" }
+}
+
+# Permet a monitoring/runner-ci (meme route table) de joindre le reseau
+# Proxmox local (VMs k3s) et le reseau du tunnel WireGuard en passant par
+# wg-gateway, qui fait office de routeur.
+resource "aws_route" "to_wireguard_net" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "10.8.0.0/24"
+  network_interface_id   = aws_instance.wg_gateway.primary_network_interface_id
+}
+
+resource "aws_route" "to_proxmox_net" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "10.10.10.0/24"
+  network_interface_id   = aws_instance.wg_gateway.primary_network_interface_id
 }
 
 resource "aws_eip" "wg_gateway" {
