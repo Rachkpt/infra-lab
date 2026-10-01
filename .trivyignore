@@ -1,0 +1,5 @@
+# KSV-0118 : k8s/apps/hello-world/deployment.yaml utilise une image demo
+# (nginxdemos/hello) qui doit demarrer en root pour bind le port 80 (<1024).
+# Meme raison que le nosemgrep sur ce fichier. A retirer si/quand ce
+# placeholder est remplace par une vraie application.
+KSV-0118
