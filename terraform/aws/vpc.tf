@@ -12,13 +12,13 @@ resource "aws_internet_gateway" "lab" {
   tags = { Name = "infra-lab-igw" }
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public" { # nosemgrep: terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address
   vpc_id     = aws_vpc.lab.id
   cidr_block = "10.0.1.0/24"
   # Choix assume pour ce lab : pas de NAT Gateway (payante) pour sortir sur
   # internet, donc les 3 VMs ont une IP publique directe, avec SSH restreint
   # a mon IP et le reste filtre par security group (voir security_groups.tf).
-  map_public_ip_on_launch = true # nosemgrep: terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address
+  map_public_ip_on_launch = true
   availability_zone       = "${var.aws_region}a"
 
   tags = { Name = "infra-lab-public" }
