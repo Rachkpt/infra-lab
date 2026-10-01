@@ -22,11 +22,12 @@ infra-lab/
   - voir [docs/phase0-proxmox-template.md](docs/phase0-proxmox-template.md),
     [docs/phase0-proxmox-internal-network.md](docs/phase0-proxmox-internal-network.md),
     [docs/phase0-setup-aws-iam.md](docs/phase0-setup-aws-iam.md)
-- [ ] Phase 1 : Terraform + Ansible, VMs locales, WireGuard vers AWS, Traefik, DNS
+- [x] Phase 1 : Terraform + Ansible, VMs locales, WireGuard vers AWS, Traefik, DNS
   - [x] VMs AWS (wg-gateway, monitoring, runner-ci) via Terraform
   - [x] VMs Proxmox (k3s-master, k3s-worker, infra) via Terraform, IP fixes sur `vmbr1`
   - [x] Tunnel WireGuard entre Proxmox et AWS — voir [docs/phase1-wireguard-tunnel.md](docs/phase1-wireguard-tunnel.md)
-  - [ ] Traefik + DNS interne
+  - [x] Traefik (HTTPS public, wg-gateway) + DNS interne (dnsmasq, Proxmox) — voir [docs/phase1-traefik-dns.md](docs/phase1-traefik-dns.md)
+  - [ ] Ansible (pour l'instant tout est fait a la main, a automatiser)
 - [ ] Phase 2 : k3s + ArgoCD (GitOps)
 - [ ] Phase 3 : pipeline DevSecOps (+ VM runner-ci)
 - [ ] Phase 4 : monitoring sur AWS, alertes Telegram
