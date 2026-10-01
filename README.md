@@ -18,8 +18,15 @@ infra-lab/
 
 ## Phases
 
-- [ ] Phase 0 : Proxmox, reseau, template Ubuntu cloud-init
+- [x] Phase 0 : Proxmox, reseau, template Ubuntu cloud-init
+  - voir [docs/phase0-proxmox-template.md](docs/phase0-proxmox-template.md),
+    [docs/phase0-proxmox-internal-network.md](docs/phase0-proxmox-internal-network.md),
+    [docs/phase0-setup-aws-iam.md](docs/phase0-setup-aws-iam.md)
 - [ ] Phase 1 : Terraform + Ansible, VMs locales, WireGuard vers AWS, Traefik, DNS
+  - [x] VMs AWS (wg-gateway, monitoring, runner-ci) via Terraform
+  - [x] VMs Proxmox (k3s-master, k3s-worker, infra) via Terraform, IP fixes sur `vmbr1`
+  - [ ] Tunnel WireGuard entre Proxmox et AWS
+  - [ ] Traefik + DNS interne
 - [ ] Phase 2 : k3s + ArgoCD (GitOps)
 - [ ] Phase 3 : pipeline DevSecOps (+ VM runner-ci)
 - [ ] Phase 4 : monitoring sur AWS, alertes Telegram
