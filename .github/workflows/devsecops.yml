@@ -1,0 +1,27 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks (secrets scan)
+        run: gitleaks detect --source . --verbose --redact
+
+      - name: Semgrep (static analysis)
+        run: semgrep scan --config auto --metrics=off --error
+
+      - name: Trivy (secrets + IaC misconfigurations)
+        run: |
+          trivy fs --scanners secret --severity HIGH,CRITICAL --exit-code 1 .
+          trivy config --severity HIGH,CRITICAL --exit-code 1 .
