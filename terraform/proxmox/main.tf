@@ -16,6 +16,10 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
     dedicated = 2048
   }
 
+  network_device {
+    bridge = "vmbr1"
+  }
+
   disk {
     datastore_id = var.datastore_id
     interface    = "scsi0"
@@ -60,6 +64,10 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
     dedicated = 3072
   }
 
+  network_device {
+    bridge = "vmbr1"
+  }
+
   disk {
     datastore_id = var.datastore_id
     interface    = "scsi0"
@@ -102,6 +110,10 @@ resource "proxmox_virtual_environment_vm" "infra" {
 
   memory {
     dedicated = 1536
+  }
+
+  network_device {
+    bridge = "vmbr1"
   }
 
   disk {
