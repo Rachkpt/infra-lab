@@ -28,6 +28,14 @@ resource "aws_security_group" "wg_gateway" {
     cidr_blocks = [var.my_ip]
   }
 
+  ingress {
+    description = "Trafic interne du VPC a router vers le tunnel WireGuard"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["10.0.1.0/24"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -54,11 +62,11 @@ resource "aws_security_group" "internal_only" {
   }
 
   ingress {
-    description = "Trafic interne depuis le tunnel WireGuard (ajuste en Phase 1)"
+    description = "Trafic interne depuis le tunnel WireGuard et le reseau Proxmox"
     from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["10.8.0.0/24"]
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["10.8.0.0/24", "10.10.10.0/24"]
   }
 
   egress {
