@@ -28,6 +28,11 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
         address = "dhcp"
       }
     }
+
+    user_account {
+      username = "ubuntu"
+      keys     = [tls_private_key.infra_lab.public_key_openssh]
+    }
   }
 
   stop_on_destroy = true
@@ -67,6 +72,11 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
         address = "dhcp"
       }
     }
+
+    user_account {
+      username = "ubuntu"
+      keys     = [tls_private_key.infra_lab.public_key_openssh]
+    }
   }
 
   stop_on_destroy = true
@@ -105,6 +115,11 @@ resource "proxmox_virtual_environment_vm" "infra" {
       ipv4 {
         address = "dhcp"
       }
+    }
+
+    user_account {
+      username = "ubuntu"
+      keys     = [tls_private_key.infra_lab.public_key_openssh]
     }
   }
 
