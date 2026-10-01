@@ -1,0 +1,5 @@
+# Copie ce fichier en terraform.tfvars (gitignore) et mets ta vraie IP publique.
+# Trouve-la avec: curl -s ifconfig.me
+
+aws_region = "eu-west-3"
+my_ip      = "X.X.X.X/32"
