@@ -29,5 +29,5 @@ infra-lab/
   - [x] Traefik (HTTPS public, wg-gateway) + DNS interne (dnsmasq, Proxmox) — voir [docs/phase1-traefik-dns.md](docs/phase1-traefik-dns.md)
   - [ ] Ansible (pour l'instant tout est fait a la main, a automatiser)
 - [x] Phase 2 : k3s + ArgoCD (GitOps) — voir [docs/phase2-k3s-argocd.md](docs/phase2-k3s-argocd.md)
-- [ ] Phase 3 : pipeline DevSecOps (+ VM runner-ci)
+- [x] Phase 3 : pipeline DevSecOps (+ VM runner-ci) — voir [docs/phase3-devsecops-pipeline.md](docs/phase3-devsecops-pipeline.md)
 - [ ] Phase 4 : monitoring sur AWS, alertes Telegram

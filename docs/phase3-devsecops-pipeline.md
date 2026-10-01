@@ -57,6 +57,49 @@ Chaque etape fait echouer le job (`exit-code 1` / `--error`) si elle
 trouve quelque chose — c'est un vrai gate, pas juste un rapport
 informatif.
 
+## Premier run : les vrais findings et comment on les a traites
+
+Le tout premier run a casse a 3 reprises pour des raisons differentes,
+plutot instructif sur le fonctionnement reel de ces outils :
+
+1. **Semgrep refuse `--config auto` avec `--metrics=off`** — ce mode a
+   besoin du registre Semgrep (donc des metriques actives) pour choisir
+   les regles automatiquement. Retire `--metrics=off`.
+
+2. **Semgrep a trouve 4 vrais problemes** des le premier scan :
+   - `actions/checkout@v4` (tag mutable, risque supply-chain) -> epingle
+     sur un SHA de commit : `actions/checkout@8ade135a...`
+   - `hello-world` sans `securityContext` -> ajout de
+     `allowPrivilegeEscalation: false` (vrai fix) et
+     `readOnlyRootFilesystem: true` + volumes `emptyDir` pour les
+     chemins ecrits par nginx (`/tmp`, `/var/cache/nginx`, `/var/run`)
+   - `aws_subnet.public` avec IP publique -> choix assume du lab (pas de
+     NAT Gateway payante), documente et suppresse plutot que "corrige"
+
+3. **Trivy a son propre moteur de regles**, independant de Semgrep : IMDSv2
+   non force (`AWS-0028`), disques racine non chiffres (`AWS-0131`),
+   egress large sur les security groups (`AWS-0104`), meme finding IP
+   publique mais sous un ID different (`AWS-0164`), et le meme "root
+   necessaire pour nginx" sous l'ID `KSV-0118`. Les deux premiers sont
+   de vrais fixes faciles (ajoutes dans `main.tf` : `metadata_options`
+   et `root_block_device.encrypted`) ; le reste est le meme type de
+   compromis assume que pour Semgrep.
+
+### Suppression de findings : la syntaxe compte, et elle differe par type de fichier
+
+- **Terraform (HCL)** : `# nosemgrep: <regle>` et `# trivy:ignore:<ID>`
+  fonctionnent tous les deux, mais doivent etre sur la **premiere ligne
+  du bloc matche** (`resource "..." "..." {  # nosemgrep: ... trivy:ignore:...`),
+  pas sur l'attribut en cause ni sur une ligne a part — sinon l'outil
+  l'ignore silencieusement et continue a remonter le finding. Attention
+  aussi a l'ID exact : Semgrep l'affiche en double dans ses logs
+  (`terraform.aws.security.X.X`), c'est bien l'ID complet a reprendre.
+- **Kubernetes (YAML)** : `# nosemgrep: <regle>` fonctionne en trailing
+  comment sur la ligne `spec:` du pod. Le `# trivy:ignore:<ID>` en
+  revanche **ne fonctionne pas du tout** sur ces manifests (contrairement
+  au Terraform) — il faut passer par un fichier `.trivyignore` a la
+  racine du depot (un ID par ligne).
+
 ## Pourquoi pas dans `pipelines/`
 
 Le dossier `pipelines/` prevu dans la structure initiale du depot ne
