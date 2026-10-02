@@ -18,8 +18,8 @@ scrape_configs:
   - job_name: node-exporters
     static_configs:
       - targets:
-          - 10.0.1.92:9100 # wg-gateway
-          - 10.0.1.23:9100 # runner-ci
+          - 10.0.1.177:9100 # wg-gateway
+          - 10.0.1.67:9100 # runner-ci
           - 10.10.10.10:9100 # k3s-master
           - 10.10.10.11:9100 # k3s-worker
           - 10.10.10.12:9100 # infra
