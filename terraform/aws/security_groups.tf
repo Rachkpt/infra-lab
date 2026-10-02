@@ -20,12 +20,16 @@ resource "aws_security_group" "wg_gateway" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # CGNAT cote FAI local : l'IP change trop souvent pour un filtrage fiable.
+  # Protection restante : authentification par cle uniquement (pas de mot
+  # de passe SSH actif sur ces images cloud-init).
+  # trivy:ignore:AWS-0099
   ingress {
-    description = "SSH depuis mon IP uniquement"
+    description = "SSH (cle uniquement, IP source non filtrable via CGNAT)"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -57,12 +61,13 @@ resource "aws_security_group" "internal_only" {
   description = "SSH depuis mon IP + trafic interne via WireGuard"
   vpc_id      = aws_vpc.lab.id
 
+  # trivy:ignore:AWS-0099
   ingress {
-    description = "SSH depuis mon IP"
+    description = "SSH (cle uniquement, IP source non filtrable via CGNAT)"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
