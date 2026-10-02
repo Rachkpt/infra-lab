@@ -2,6 +2,8 @@
 
 Lab DevOps hybride : Proxmox (local) + AWS (cloud), le tout en Infrastructure as Code.
 
+<!-- test pipeline DevSecOps -->
+
 ## Structure
 
 ```
