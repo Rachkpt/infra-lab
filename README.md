@@ -2,8 +2,6 @@
 
 Lab DevOps hybride : Proxmox (local) + AWS (cloud), le tout en Infrastructure as Code.
 
-<!-- test pipeline DevSecOps (runner-ci reconstruit) -->
-
 ## Structure
 
 ```
@@ -32,4 +30,11 @@ infra-lab/
   - [ ] Ansible (pour l'instant tout est fait a la main, a automatiser)
 - [x] Phase 2 : k3s + ArgoCD (GitOps) — voir [docs/phase2-k3s-argocd.md](docs/phase2-k3s-argocd.md)
 - [x] Phase 3 : pipeline DevSecOps (+ VM runner-ci) — voir [docs/phase3-devsecops-pipeline.md](docs/phase3-devsecops-pipeline.md)
-- [ ] Phase 4 : monitoring sur AWS, alertes Telegram
+- [x] Phase 4 : monitoring sur AWS, alertes Telegram — voir [docs/phase4-monitoring.md](docs/phase4-monitoring.md)
+
+## Statut
+
+Les 5 phases prevues sont completes. Pistes restantes (voir la fin de
+[docs/phase4-monitoring.md](docs/phase4-monitoring.md) et la section
+Ansible ci-dessus) : automatiser l'installation des VMs avec Ansible, IP
+privees AWS stables, vrai nom de domaine + Let's Encrypt pour Traefik.
