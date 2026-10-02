@@ -192,7 +192,9 @@ metadata:
   labels:
     k8s-app: metrics-server
   name: v1beta1.metrics.k8s.io
-spec:
+spec: # nosemgrep: yaml.kubernetes.security.skip-tls-verify-service.skip-tls-verify-service
+  # Reglage par defaut du manifeste officiel metrics-server (certificat
+  # auto-signe du serveur de metriques, standard sur k3s/minikube).
   group: metrics.k8s.io
   groupPriorityMinimum: 100
   insecureSkipTLSVerify: true

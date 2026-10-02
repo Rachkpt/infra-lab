@@ -15,7 +15,10 @@ spec:
     metadata:
       labels:
         app: uptime-kuma
-    spec:
+    spec: # nosemgrep: yaml.kubernetes.security.run-as-non-root.run-as-non-root
+      # Image officielle non concue pour tourner en non-root par defaut
+      # (ecrit dans /app au demarrage) ; a revoir si une image alternative
+      # non-root apparait.
       containers:
         - name: uptime-kuma
           image: louislam/uptime-kuma:1
