@@ -3,3 +3,8 @@
 # Meme raison que le nosemgrep sur ce fichier. A retirer si/quand ce
 # placeholder est remplace par une vraie application.
 KSV-0118
+
+# KSV-0014 : k8s/apps/uptime-kuma/deployment.yaml - l'image officielle
+# louislam/uptime-kuma ecrit dans /app au demarrage, incompatible avec un
+# rootfs en lecture seule pour l'instant.
+KSV-0014
