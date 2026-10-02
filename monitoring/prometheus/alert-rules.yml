@@ -1,0 +1,29 @@
+groups:
+  - name: infra-lab
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.instance }} est injoignable"
+          description: "{{ $labels.job }}/{{ $labels.instance }} ne repond plus depuis 2 minutes."
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU eleve sur {{ $labels.instance }}"
+          description: "Utilisation CPU > 90% depuis 5 minutes."
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memoire elevee sur {{ $labels.instance }}"
+          description: "Utilisation memoire > 90% depuis 5 minutes."
