@@ -1,0 +1,20 @@
+---
+- name: Installer k3s (control-plane)
+  ansible.builtin.shell: set -o pipefail && curl -sfL https://get.k3s.io | sh -
+  args:
+    executable: /bin/bash
+    creates: /usr/local/bin/k3s
+
+- name: Attendre que le node-token soit disponible
+  ansible.builtin.wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+    timeout: 60
+
+- name: Lire le node-token
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_node_token_raw
+
+- name: Exposer le token comme fact partage (pour k3s_agent)
+  ansible.builtin.set_fact:
+    k3s_node_token: "{{ k3s_node_token_raw.content | b64decode | trim }}"

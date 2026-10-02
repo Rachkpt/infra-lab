@@ -1,0 +1,10 @@
+[Interface]
+PrivateKey = {{ wg_private_key }}
+Address = {{ wireguard_address_gateway }}
+ListenPort = {{ wireguard_listen_port }}
+PostUp = iptables -A FORWARD -i {{ wireguard_interface }} -j ACCEPT; iptables -A FORWARD -o {{ wireguard_interface }} -j ACCEPT
+PostDown = iptables -D FORWARD -i {{ wireguard_interface }} -j ACCEPT; iptables -D FORWARD -o {{ wireguard_interface }} -j ACCEPT
+
+[Peer]
+PublicKey = {{ hostvars['proxmox']['wg_public_key'] }}
+AllowedIPs = {{ wireguard_allowed_ips_on_gateway }}

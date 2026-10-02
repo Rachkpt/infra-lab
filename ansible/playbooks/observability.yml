@@ -1,0 +1,8 @@
+---
+- name: Deployer node_exporter et Promtail sur toutes les VMs surveillees
+  hosts: monitored
+  become: true
+  roles:
+    - common
+    - node_exporter
+    - promtail

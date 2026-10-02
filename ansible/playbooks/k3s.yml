@@ -1,0 +1,14 @@
+---
+- name: Installer le control-plane k3s
+  hosts: k3s_masters
+  become: true
+  roles:
+    - common
+    - k3s_server
+
+- name: Installer le worker k3s (rejoint le control-plane)
+  hosts: k3s_workers
+  become: true
+  roles:
+    - common
+    - k3s_agent

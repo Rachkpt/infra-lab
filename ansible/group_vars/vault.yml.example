@@ -1,0 +1,21 @@
+---
+# Copie ce fichier en group_vars/vault.yml, remplis les vraies valeurs,
+# puis chiffre-le avant de committer quoi que ce soit :
+#
+#   cp group_vars/vault.yml.example group_vars/vault.yml
+#   nano group_vars/vault.yml
+#   ansible-vault encrypt group_vars/vault.yml
+#
+# group_vars/vault.yml (une fois chiffre) peut etre commite sans risque.
+# Ne jamais committer la version en clair.
+
+telegram_bot_token: "REMPLACE_PAR_TON_TOKEN_BOTFATHER"
+telegram_chat_id: 0
+
+# Hash bcrypt/apr1 pour le dashboard Traefik (genere avec: htpasswd -nb admin <mdp>)
+traefik_dashboard_htpasswd: "admin:REMPLACE_PAR_LE_HASH"
+
+# Personal Access Token GitHub (fine-grained, permissions Administration:
+# Read and write sur le repo infra-lab) pour que le role github_runner
+# puisse generer lui-meme un token d'enregistrement de runner via l'API.
+github_pat: "REMPLACE_PAR_TON_PAT_GITHUB"

@@ -1,0 +1,56 @@
+---
+- name: Verifier si le runner est deja configure
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/actions-runner/.runner"
+  register: runner_configured
+
+- name: Installer et configurer le runner GitHub Actions
+  when: not runner_configured.stat.exists
+  block:
+    - name: Obtenir un token d'enregistrement via l'API GitHub
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/{{ github_repo }}/actions/runners/registration-token"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ github_pat }}"
+          Accept: "application/vnd.github+json"
+        status_code: 201
+        body_format: json
+      register: runner_token_response
+      delegate_to: localhost
+      become: false
+
+    - name: Creer le dossier du runner
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/actions-runner"
+        state: directory
+        mode: "0755"
+
+    - name: Telecharger et extraire le runner GitHub Actions
+      ansible.builtin.unarchive:
+        src: "https://github.com/actions/runner/releases/download/v{{ github_runner_version }}/actions-runner-linux-x64-{{ github_runner_version }}.tar.gz"
+        dest: "{{ ansible_env.HOME }}/actions-runner"
+        remote_src: true
+
+    - name: Configurer le runner (unattended)
+      ansible.builtin.command: >
+        ./config.sh --url https://github.com/{{ github_repo }}
+        --token {{ runner_token_response.json.token }}
+        --unattended --name {{ inventory_hostname }}
+      args:
+        chdir: "{{ ansible_env.HOME }}/actions-runner"
+      changed_when: true
+
+    - name: Installer le service systemd du runner
+      ansible.builtin.command: ./svc.sh install
+      args:
+        chdir: "{{ ansible_env.HOME }}/actions-runner"
+      become: true
+      changed_when: true
+
+    - name: Demarrer le service du runner
+      ansible.builtin.command: ./svc.sh start
+      args:
+        chdir: "{{ ansible_env.HOME }}/actions-runner"
+      become: true
+      changed_when: true

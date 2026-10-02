@@ -15,6 +15,7 @@ wg-*.conf
 # Ansible
 *.retry
 vault-pass.txt
+ansible/group_vars/vault.yml
 
 # Monitoring (secrets)
 monitoring/alertmanager/alertmanager.yml

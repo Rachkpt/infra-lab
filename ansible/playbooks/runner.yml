@@ -1,0 +1,10 @@
+---
+- name: Configurer le runner GitHub Actions et les scanners DevSecOps
+  hosts: runner-ci
+  become: true
+  vars_files:
+    - ../group_vars/vault.yml
+  roles:
+    - common
+    - github_runner
+    - security_scanners

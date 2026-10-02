@@ -1,0 +1,19 @@
+---
+- name: Installer Docker et le plugin compose
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose-v2
+    state: present
+
+- name: Activer et demarrer Docker
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Ajouter l'utilisateur au groupe docker {{ ansible_user }}
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true

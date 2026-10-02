@@ -1,0 +1,15 @@
+---
+github_repo: Rachkpt/infra-lab
+
+wireguard_interface: wg0
+wireguard_listen_port: 51820
+wireguard_address_gateway: 10.8.0.1/24
+wireguard_address_proxmox: 10.8.0.2/24
+wireguard_allowed_ips_on_gateway: "10.8.0.2/32,10.10.10.0/24"
+wireguard_allowed_ips_on_proxmox: "10.8.0.1/32,10.0.1.0/24"
+
+node_exporter_version: 1.8.2
+promtail_version: 3.1.1
+traefik_version: 3.1.6
+github_runner_version: 2.337.0
+gitleaks_version: 8.21.2

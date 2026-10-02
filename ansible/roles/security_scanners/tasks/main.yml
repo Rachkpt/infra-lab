@@ -1,0 +1,91 @@
+---
+- name: Installer Gitleaks
+  block:
+    - name: Verifier si Gitleaks est deja installe
+      ansible.builtin.stat:
+        path: /usr/local/bin/gitleaks
+      register: gitleaks_bin
+
+    - name: Telecharger et installer Gitleaks
+      when: not gitleaks_bin.stat.exists
+      block:
+        - name: Telecharger l'archive Gitleaks
+          ansible.builtin.get_url:
+            url: "https://github.com/gitleaks/gitleaks/releases/download/v{{ gitleaks_version }}/gitleaks_{{ gitleaks_version }}_linux_x64.tar.gz"
+            dest: /tmp/gitleaks.tar.gz
+            mode: "0644"
+
+        - name: Extraire l'archive
+          ansible.builtin.unarchive:
+            src: /tmp/gitleaks.tar.gz
+            dest: /tmp
+            remote_src: true
+
+        - name: Installer le binaire dans /usr/local/bin
+          ansible.builtin.copy:
+            src: /tmp/gitleaks
+            dest: /usr/local/bin/gitleaks
+            mode: "0755"
+            remote_src: true
+
+- name: Installer Semgrep (via pipx)
+  block:
+    - name: Installer pipx
+      ansible.builtin.apt:
+        name: pipx
+        state: present
+        update_cache: true
+
+    - name: Verifier si Semgrep est deja installe
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/.local/bin/semgrep"
+      register: semgrep_bin
+
+    - name: Installer Semgrep via pipx
+      ansible.builtin.command: pipx install semgrep
+      when: not semgrep_bin.stat.exists
+      changed_when: true
+
+    - name: Rendre Semgrep accessible globalement
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/.local/bin/semgrep"
+        dest: /usr/local/bin/semgrep
+        state: link
+      become: true
+
+- name: Installer Trivy (depot officiel)
+  block:
+    - name: Installer les prerequis
+      ansible.builtin.apt:
+        name:
+          - wget
+          - apt-transport-https
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Verifier si la cle GPG de Trivy est deja presente
+      ansible.builtin.stat:
+        path: /usr/share/keyrings/trivy.gpg
+      register: trivy_gpg_key
+
+    - name: Telecharger et importer la cle GPG de Trivy
+      ansible.builtin.shell: |
+        set -eo pipefail
+        curl -fsSL https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+      args:
+        executable: /bin/bash
+      when: not trivy_gpg_key.stat.exists
+      changed_when: true
+
+    - name: Ajouter le depot Trivy
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb {{ ansible_distribution_release }} main"
+        state: present
+        filename: trivy
+
+    - name: Installer Trivy
+      ansible.builtin.apt:
+        name: trivy
+        state: present
+        update_cache: true

@@ -1,0 +1,9 @@
+---
+# Les deux hotes (wg-gateway + proxmox) doivent tourner dans la meme
+# invocation : chaque cote a besoin de la cle publique de l'autre.
+- name: Configurer le tunnel WireGuard
+  hosts: wg-gateway,proxmox
+  become: true
+  roles:
+    - common
+    - wireguard

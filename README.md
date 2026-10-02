@@ -27,14 +27,15 @@ infra-lab/
   - [x] VMs Proxmox (k3s-master, k3s-worker, infra) via Terraform, IP fixes sur `vmbr1`
   - [x] Tunnel WireGuard entre Proxmox et AWS — voir [docs/phase1-wireguard-tunnel.md](docs/phase1-wireguard-tunnel.md)
   - [x] Traefik (HTTPS public, wg-gateway) + DNS interne (dnsmasq, Proxmox) — voir [docs/phase1-traefik-dns.md](docs/phase1-traefik-dns.md)
-  - [ ] Ansible (pour l'instant tout est fait a la main, a automatiser)
+  - [x] Ansible — ecrit et valide, pas encore execute contre l'infra reelle, voir [docs/phase5-ansible.md](docs/phase5-ansible.md)
 - [x] Phase 2 : k3s + ArgoCD (GitOps) — voir [docs/phase2-k3s-argocd.md](docs/phase2-k3s-argocd.md)
 - [x] Phase 3 : pipeline DevSecOps (+ VM runner-ci) — voir [docs/phase3-devsecops-pipeline.md](docs/phase3-devsecops-pipeline.md)
 - [x] Phase 4 : monitoring sur AWS, alertes Telegram — voir [docs/phase4-monitoring.md](docs/phase4-monitoring.md)
+- [x] Phase 5 (bonus) : automatisation Ansible — voir [docs/phase5-ansible.md](docs/phase5-ansible.md) et [ansible/README.md](ansible/README.md)
 
 ## Statut
 
-Les 5 phases prevues sont completes. Pistes restantes (voir la fin de
-[docs/phase4-monitoring.md](docs/phase4-monitoring.md) et la section
-Ansible ci-dessus) : automatiser l'installation des VMs avec Ansible, IP
-privees AWS stables, vrai nom de domaine + Let's Encrypt pour Traefik.
+Les 5 phases prevues sont completes, plus le bonus Ansible (ecrit,
+valide, a executer). Pistes restantes : lancer reellement
+`ansible-playbook site.yml`, IP privees AWS stables, vrai nom de domaine
++ Let's Encrypt pour Traefik.

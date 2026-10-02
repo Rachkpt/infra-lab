@@ -1,0 +1,23 @@
+---
+# Rejoue tout l'infra-lab dans l'ordre : WireGuard d'abord (fondation
+# reseau), puis chaque service dans son ordre de dependance logique.
+# Peut aussi se lancer par morceaux (voir chaque playbook individuel) si
+# une seule VM a ete recreee.
+
+- name: Tunnel WireGuard
+  import_playbook: wireguard.yml
+
+- name: Traefik
+  import_playbook: traefik.yml
+
+- name: Cluster k3s
+  import_playbook: k3s.yml
+
+- name: Observabilite (node_exporter + Promtail)
+  import_playbook: observability.yml
+
+- name: Stack monitoring
+  import_playbook: monitoring_stack.yml
+
+- name: Runner CI + scanners DevSecOps
+  import_playbook: runner.yml

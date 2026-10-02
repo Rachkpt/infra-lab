@@ -1,0 +1,11 @@
+[Interface]
+PrivateKey = {{ wg_private_key }}
+Address = {{ wireguard_address_proxmox }}
+PostUp = iptables -A FORWARD -i {{ wireguard_interface }} -j ACCEPT; iptables -A FORWARD -o {{ wireguard_interface }} -j ACCEPT
+PostDown = iptables -D FORWARD -i {{ wireguard_interface }} -j ACCEPT; iptables -D FORWARD -o {{ wireguard_interface }} -j ACCEPT
+
+[Peer]
+PublicKey = {{ hostvars['wg-gateway']['wg_public_key'] }}
+Endpoint = {{ hostvars['wg-gateway']['ansible_host'] }}:{{ wireguard_listen_port }}
+AllowedIPs = {{ wireguard_allowed_ips_on_proxmox }}
+PersistentKeepalive = 25

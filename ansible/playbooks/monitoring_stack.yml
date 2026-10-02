@@ -1,0 +1,10 @@
+---
+- name: Deployer la stack monitoring (Prometheus/Grafana/Loki/Alertmanager)
+  hosts: monitoring
+  become: true
+  vars_files:
+    - ../group_vars/vault.yml
+  roles:
+    - common
+    - docker
+    - monitoring_stack

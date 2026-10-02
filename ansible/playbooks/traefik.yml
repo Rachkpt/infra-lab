@@ -1,0 +1,9 @@
+---
+- name: Deployer Traefik sur wg-gateway
+  hosts: wg-gateway
+  become: true
+  vars_files:
+    - ../group_vars/vault.yml
+  roles:
+    - common
+    - traefik

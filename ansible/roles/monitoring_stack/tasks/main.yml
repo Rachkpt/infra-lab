@@ -1,0 +1,24 @@
+---
+- name: Installer git
+  ansible.builtin.apt:
+    name: git
+    state: present
+
+- name: Cloner/mettre a jour le depot infra-lab
+  ansible.builtin.git:
+    repo: "https://github.com/{{ github_repo }}.git"
+    dest: "{{ ansible_env.HOME }}/infra-lab"
+    version: main
+    force: true
+
+- name: Deployer alertmanager.yml avec le vrai token Telegram
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: "{{ ansible_env.HOME }}/infra-lab/monitoring/alertmanager/alertmanager.yml"
+    mode: "0600"
+
+- name: Lancer/mettre a jour la stack monitoring
+  ansible.builtin.command: docker compose up -d
+  args:
+    chdir: "{{ ansible_env.HOME }}/infra-lab/monitoring"
+  changed_when: true
