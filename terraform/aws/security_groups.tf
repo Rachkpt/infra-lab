@@ -66,11 +66,11 @@ resource "aws_security_group" "internal_only" {
   }
 
   ingress {
-    description = "Trafic interne depuis le tunnel WireGuard et le reseau Proxmox"
+    description = "Trafic interne depuis le VPC, le tunnel WireGuard et le reseau Proxmox"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["10.8.0.0/24", "10.10.10.0/24"]
+    cidr_blocks = ["10.0.1.0/24", "10.8.0.0/24", "10.10.10.0/24"]
   }
 
   # trivy:ignore:AWS-0104
